@@ -1,4 +1,5 @@
-from flask import Flask , render_template, redirect, request, flash
+from flask import Flask , render_template, redirect, request, flash, url_for
+from flask_sqlal'
 import json
 
 app = Flask(__name__)
@@ -7,7 +8,17 @@ app.config['SECRET_KEY'] = 'VICTOR'
 
 @app.route('/')
 def home():
+    return render_template('homepage.html')
+
+
+@app.route('/login')
+def login_init():
     return render_template('login.html')
+
+
+@app.route('/registro')
+def registro():
+    return render_template('registro.html')
 
 
 @app.route('/login', methods=['POST'])

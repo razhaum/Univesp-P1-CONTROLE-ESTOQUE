@@ -1,0 +1,15 @@
+11/04 - Leticia
+
+homepage.html
+    - deixei como link a pagina de login
+    - criei um link para pagina de regristro de novo usuário - criar uma conta
+
+registro.html
+    - criei só o esqueleto da página, precisa criar a pagina ainda
+
+login.html
+    -criei o link para o usuário poder acesso a pagina de registro
+    
+
+
+
