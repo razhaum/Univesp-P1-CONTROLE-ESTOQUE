@@ -3,12 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro</title>
+    <title>Sistema de estoque</title>
 </head>
 <body>
-    <h1>Criar formulario de cadastro de novo usuario</h1><br>
+    <h1>Sistema de estoque</h1><br>
 
-    <a href="{{url_for('login')}}">Já possui uma conta? Entrar</a>
+    <div class="container">  <!-- Wrapper for form -->
+        <h2 class="word">Cadastro de novo usuário</h2>
+
+        <form action="/registro" method="post">
+            <div>{{ msg }}</div>
+
+            <input class="textbox" type="text" name="nome" placeholder="Insira nome de usuario" required>
+            <input class="textbox" type="password" name="senha" placeholder="Insira a senha" required>
+            <input class="textbox" type="email" name="email" placeholder="Insira email" required>
+
+            <button class="btn" type="submit">Cadastrar</button>
+        </form>
+
+        <p class="bottom">Já possui uma conta? <a href="{{ url_for('login') }}">Entre aqui</a></p>
+    </div>
     
 </body>
 </html>

@@ -5,11 +5,14 @@ homepage.html
     - criei um link para pagina de regristro de novo usuário - criar uma conta
 
 registro.html
-    - criei só o esqueleto da página, precisa criar a pagina ainda
+    - criei só o esqueleto da página, precisa configurar certinho
 
 login.html
     -criei o link para o usuário poder acesso a pagina de registro
     
-
+17/04:
+- conexão com o mysql
+- criei o arquivo test.py só para testar se os registros estavam sendo salvos no banco de dados.
+- criei o arquio criação_db.py para criar o banco e a tabela Usuário (tabela utilizada pra armazenar os usuários.)
 
 
