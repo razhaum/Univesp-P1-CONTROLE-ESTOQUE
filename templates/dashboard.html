@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIG - Sistema Integrado</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            display: flex;
+            min-height: 100vh;
+            background: #f5f7fa;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background: #2c3e50;
+            color: white;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Cabeçalho do Sidebar */
+        .sidebar-header {
+            padding: 25px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+        }
+
+        .system-name {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #3498db;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #3498db;
+        }
+
+        .user-info {
+            text-align: left;
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .user-role {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        /* Menu de Navegação */
+        .nav-menu {
+            flex: 1;
+            padding: 20px 0;
+            overflow-y: auto;
+        }
+
+        .menu-item {
+            padding: 15px 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            border-left: 4px solid transparent;
+        }
+
+        .menu-item:hover {
+            background: #34495e;
+        }
+
+        .menu-item.active {
+            background: #34495e;
+            border-left: 4px solid #3498db;
+        }
+
+        .menu-item i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Conteúdo Principal */
+        .main-content {
+            flex: 1;
+            padding: 30px;
+            overflow-x: auto;
+        }
+
+        .content-section {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Estilos dos Cards */
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        /* Estilos da Tabela de Produtos */
+        .table-container {
+            margin-top: 20px;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        th {
+            background-color: #3498db;
+            color: white;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        .product-img {
+            width: 50px;
+            height: 50px;
+            border-radius: 4px;
+            object-fit: cover;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .badge-success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .badge-warning {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .badge-danger {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn {
+            padding: 6px 12px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .btn-edit {
+            background-color: #ffc107;
+            color: #212529;
+        }
+
+        .btn-edit:hover {
+            background-color: #e0a800;
+        }
+
+        .btn-delete {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background-color: #c82333;
+        }
+
+        .header-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .btn-add {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 4px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn-add:hover {
+            background-color: #218838;
+        }
+        .dark-theme {
+            background: #222;
+            color: #fff;
+        }
+        .dark-theme .card {
+            background: #333;
+            color: #fff;
+        }
+        .theme-btn {
+            position: fixed;
+            left: 10px;
+            bottom: 10px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+        }
+        .dark-theme .menu-item:hover {
+         background: #c5bdbd !important;
+          color: #000 !important; /* Texto preto no hover */
+        }
+
+        .dark-theme tr:hover {
+        background: #c5bdbd !important;
+        color: #000 !important; /* Texto preto no hover */
+        }
+
+        
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        
+        .form-group textarea {
+            height: 100px;
+            resize: vertical;
+        }
+        
+        .submit-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+        }
+        
+        .submit-btn:hover {
+            background-color: #45a049;
+        }
+
+        .modal-overlay {
+            display: none; /* Inicia escondido */
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 25px;
+            border-radius: 8px;
+            max-width: 600px;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            width: 100%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .modal-content{
+            width: 550px;
+        }
+
+        .btn-edit {
+    background-color: #ffc107;
+    color: #000;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-delete {
+    background-color: #dc3545;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 5px;
+}
+
+/* Estilo do botão de logout */
+.logout-btn {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 14px;
+            transition: background-color 0.3s;
+            z-index: 1000;
+        }
+
+        .logout-btn:hover {
+            background-color: #c0392b;
+        }
+
+        .dark-theme .logout-btn {
+            background-color: #c0392b;
+        }
+
+        .dark-theme .logout-btn:hover {
+            background-color: #e74c3c;
+        }
+
+        /* Estilo para o botão de fechar modal */
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            color: #aaa;
+        }
+
+        .modal-close:hover {
+            color: #333;
+        }
+
+        .dark-theme .modal-overlay {
+            background-color: #333;
+            color: white;
+        }
+
+        .dark-theme .modal-close {
+            color: #ccc;
+        }
+
+        .dark-theme .modal-close:hover {
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <button class="logout-btn" id="logoutBtn">
+        <i class="fas fa-sign-out-alt"></i>
+        Sair
+    </button>
+    <!-- Menu Lateral -->
+    <div class="sidebar">
+        <!-- Cabeçalho com SIG e usuário -->
+        <div class="sidebar-header">
+            <div class="system-name">SIG</div>
+            <div class="user-profile">
+                <img src="https://via.placeholder.com/50" alt="Usuário" class="user-avatar">
+                <div class="user-info">
+                    <div class="user-name">{{ nome_usuario }}</div>
+                    <div class="user-role">Usuário</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Menu de Navegação -->
+        <div class="nav-menu">
+            <div class="menu-item" data-target="dashboard">
+                <i class="fas fa-home"></i>
+                <span>Dashboard</span>
+            </div>
+            <div class="menu-item" data-target="clientes">
+                <i class="fas fa-users"></i>
+                <span>Clientes</span>
+            </div>
+            <div class="menu-item" data-target="vendas">
+                <i class="fas fa-chart-line"></i>
+                <span>Vendas</span>
+            </div>
+            <div class="menu-item active" data-target="produtos">
+                <i class="fas fa-box-open"></i>
+                <span>Produtos</span>
+            </div>
+            <div class="menu-item" data-target="config">
+                <i class="fas fa-cog"></i>
+                <span>Configurações</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Área de Conteúdo -->
+    <div class="main-content">
+        <!-- Dashboard -->
+        <div class="content-section" id="dashboard">
+            <h1>Dashboard</h1>
+            <div class="card">
+                <p>Bem-vindo ao Sistema Integrado de Gestão (SIG)</p>
+            </div>
+        </div>
+
+        <!-- Seção de Produtos -->
+        <div class="content-section active" id="produtos">
+            <div class="header-actions">
+                <h1>Produtos</h1>
+                <a href="#" class="btn-add" id="openModalBtn">
+                    <i class="fas fa-plus"></i>
+                    Adicionar Produto
+                </a>
+            </div>
+            
+            <div class="card">
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Imagem</th>
+                                <th>Nome do Produto</th>
+                                <th>Estoque</th>
+                                <th>Descrição</th>
+                                <th>Fornecedor</th>
+                                <th>Criado por</th>
+                                <th>Criado em</th>
+                                <th>Atualizado em</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="tableBody">
+                            {% for produto in produtos %}
+                                <tr>
+                                    <td>{{ produto[0] }}</td>
+                                    <td>{{ produto[1] }}</td>
+                                    <td>{{ produto[2] }}</td>
+                                    <td>{{ produto[3] }}</td>
+                                    <td>{{ produto[4] }}</td>
+                                    <td>{{ produto[5] }}</td>
+                                    <td>{{ produto[6] }}</td>
+                                    <td>{{ produto[7] }}</td>
+                                    <td>{{ produto[8] }}</td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="btn btn-edit"><i class="fas fa-edit"></i></button>
+                                            <button class="btn btn-delete"><i class="fas fa-trash"></i></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Outras seções... -->
+    </div>
+
+    <!-- Modal de Produto -->
+<div class="modal-overlay" id="productModal">
+    <div class="modal-content">
+        <span class="modal-close" id="closeModalBtn">&times;</span>
+
+        <h2 id="modalTitle">Adicionar Novo Produto</h2>
+        <form id="addProductForm"  action="/adicionarProduto" method="POST">
+            <input type="hidden" id="productId", name="productId">
+            <input type="hidden" id="isEditMode" value="false">
+            
+            <div class="form-group">
+                <label for="productImage">Imagem (URL):</label>
+                <input type="text" id="productImage" name="productImage" placeholder="https://exemplo.com/imagem.jpg">
+            </div>
+            
+            <div class="form-group">
+                <label for="productName">Nome do Produto:</label>
+                <input type="text" id="productName" name="productName" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="productStock">Estoque:</label>
+                <input  type="number" id="productStock" name="productStock" min="0" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="fornecedorName">Fornecedor:</label>
+                <input type="text" id="fornecedorName" name="fornecedorName" required>
+            </div>
+
+            <div class="form-group">
+                <label for="productDescription">Descrição:</label>
+                <input type="text"  id="productDescription" name="productDescription"  required></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="criadoPor">Criado Por:</label>
+                <input type="text" id="criadoPor" name="criadoPor" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="criadoEm">Criado em:</label>
+                <input type="date" id="criadoEm" name="criadoEm">
+            </div>
+
+            <div class="form-group">
+                <label for="atualizadoEm">Atualizado em:</label>
+                <input type="date" id="atualizadoEm" name="atualizadoEm">
+            </div>
+            
+            <button type="submit" class="submit-btn" id="submitBtn">Cadastrar</button>
+        </form>
+    </div>
+</div>
+
+
+    <script>
+        // Variável para armazenar a linha que está sendo editada
+        let currentEditingRow = null;
+
+        //Configura os botões de deletar existentes
+        function setupDeleteButtons() {
+            document.querySelectorAll('.btn-delete').forEach(button => {
+                button.addEventListener('click', function() {
+                    if (confirm('Tem certeza que deseja excluir este produto?')) {
+                        const row = this.closest('tr');
+                        const productId = row.cells[0].textContent;
+
+                        fetch('/deletarProduto', {
+                            method: 'POST',
+                            body: new URLSearchParams({ productId: productId })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            alert(data.mensagem);
+                            row.remove();
+                        })
+                        .catch(error => {
+                            console.error('Erro ao deletar produto:', error);
+                            alert('Erro ao deletar produto.');
+                        });
+                    };
+                });
+            });
+        }
+
+          // Função para obter a data de hoje no formato adequado para o campo de data
+          function getTodayDate() {
+            const today = new Date();
+            const yyyy = today.getFullYear();
+            const mm = (today.getMonth() + 1).toString().padStart(2, '0');  // Mês começa do 0
+            const dd = today.getDate().toString().padStart(2, '0');
+            return `${yyyy}-${mm}-${dd}`;
+        }
+
+        // Configura os botões de editar
+        function setupEditButtons() {
+            document.querySelectorAll('.btn-edit').forEach(button => {
+                button.addEventListener('click', function() {
+                    const row = this.closest('tr');
+                    currentEditingRow = row;
+                    
+                    // Preenche o modal com os dados da linha
+                    document.getElementById('modalTitle').textContent = 'Editar Produto';
+                    document.getElementById('productId').value = row.cells[0].textContent;
+                    document.getElementById('productImage').value = row.cells[1].textContent;
+                    document.getElementById('productName').value = row.cells[2].textContent;
+                    
+                    // Extrai apenas o número do estoque (remove "unidades" ou "Esgotado")
+                    const stockText = row.cells[3].textContent;
+                    const stockValue = stockText.includes('unidades') ? stockText.split(' ')[0] : 
+                                     stockText === 'Esgotado' ? '0' : stockText;
+                    document.getElementById('productStock').value = stockValue;
+                    
+                    document.getElementById('productDescription').value = row.cells[4].textContent;
+                    document.getElementById('fornecedorName').value = row.cells[5].textContent;
+                    document.getElementById('criadoPor').value = row.cells[6].textContent;
+                    document.getElementById('criadoEm').value = formatDateForInput(row.cells[7].textContent);
+                    // Preenche a data atual se estiver vazia
+                    const updatedDate = row.cells[8].textContent;
+                    document.getElementById('atualizadoEm').value = updatedDate ? formatDateForInput(updatedDate) : getTodayDate();
+
+                    document.getElementById('atualizadoEm').value = formatDateForInput(row.cells[8].textContent);
+                    
+                    // Muda o modo para edição
+                    document.getElementById('isEditMode').value = 'true';
+                    document.getElementById('submitBtn').textContent = 'Atualizar';
+                    
+                    // Abre o modal
+                    document.getElementById('productModal').style.display = 'flex';
+                });
+            });
+        }
+        
+
+        // Função para formatar data dd/mm/yyyy para yyyy-mm-dd (formato input date)
+        function formatDateForInput(dateString) {
+            if (!dateString) return '';
+
+            if (dateString.includes('-')) {
+                // Já no formato yyyy-mm-dd
+                return dateString;
+            }
+
+            if (dateString.includes('/')) {
+                const parts = dateString.split('/');
+                if (parts.length === 3) {
+                    const [p1, p2, p3] = parts;
+
+                    if (p1.length === 4) {
+                        // yyyy/mm/dd → convertendo para yyyy-mm-dd
+                        return `${p1}-${p2.padStart(2, '0')}-${p3.padStart(2, '0')}`;
+                    } else if (parseInt(p1) > 12) {
+                        // dd/mm/yyyy → convertendo para yyyy-mm-dd
+                        return `${p3}-${p2.padStart(2, '0')}-${p1.padStart(2, '0')}`;
+                    } else {
+                        // mm/dd/yyyy → convertendo para yyyy-mm-dd
+                        return `${p3}-${p1.padStart(2, '0')}-${p2.padStart(2, '0')}`;
+                    }
+                }
+            }
+
+            return '';
+        }
+
+        // Função para formatar data yyyy-mm-dd para dd/mm/yyyy
+        function formatDateForDisplay(dateString) {
+            if (!dateString) return '';
+            const date = new Date(dateString);
+            return date.toLocaleDateString('pt-BR');
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            setupDeleteButtons(); // Função de deletar
+            setupEditButtons(); // Função de editar
+            
+            const menuItems = document.querySelectorAll('.menu-item');
+            
+            menuItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    menuItems.forEach(i => i.classList.remove('active'));
+                    this.classList.add('active');   
+                    document.querySelectorAll('.content-section').forEach(section => {
+                        section.classList.remove('active');
+                    });
+                    
+                    const target = this.getAttribute('data-target');
+                    document.getElementById(target).classList.add('active');
+                });
+            });
+        });
+
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+            const btn = document.querySelector('.theme-btn');
+            btn.textContent = document.body.classList.contains('dark-theme') ? '🌙' : '☀️';
+        }
+
+        const openModalBtn = document.getElementById('openModalBtn');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const modal = document.getElementById('productModal');
+        
+        // Abrir modal para adicionar novo produto
+        openModalBtn.addEventListener('click', function() {
+            // Configura o modal para modo de adição
+            document.getElementById('modalTitle').textContent = 'Adicionar Novo Produto';
+            document.getElementById('isEditMode').value = 'false';
+            document.getElementById('submitBtn').textContent = 'Cadastrar';
+            document.getElementById('addProductForm').reset();
+            
+            // Configura as datas automaticamente
+            const hoje = new Date();
+            const dataFormatada = hoje.toISOString().split('T')[0];
+            
+            document.getElementById('criadoEm').value = dataFormatada;
+            document.getElementById('atualizadoEm').value = dataFormatada;
+            
+            // Preenche automaticamente o "Criado por" (opcional)
+            //document.getElementById('criadoPor').value = "Carlos Silva"; // Ou pegue do usuário logado
+            
+            // Abre o modal
+            modal.style.display = 'flex';
+        });
+        
+        // Fechar modal
+        closeModalBtn.addEventListener('click', function() {
+            modal.style.display = 'none';
+            currentEditingRow = null;
+        });
+        
+        // Fechar ao clicar fora do modal
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+                currentEditingRow = null;
+            }
+        });
+
+        document.getElementById('addProductForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Obter valores do formulário
+            const productImage = document.getElementById('productImage').value;
+            const productName = document.getElementById('productName').value;
+            const productStock = document.getElementById('productStock').value;
+            const fornecedorName = document.getElementById('fornecedorName').value;
+            const productDescription = document.getElementById('productDescription').value;
+            const criadoPor = document.getElementById('criadoPor').value;
+            const criadoEm = document.getElementById('criadoEm').value;
+            const atualizadoEm = document.getElementById('atualizadoEm').value;
+            const isEditMode = document.getElementById('isEditMode').value === 'true';
+
+
+            const formData = new FormData(this);
+
+            if (isEditMode && currentEditingRow) {
+                // Modo de edição
+                fetch('/editarProduto', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    alert(data.mensagem);
+                    window.location.href = '/Produtos'; // atualiza a página
+                })
+                .catch(error => {
+                    console.error('Erro ao atualizar produto:', error);
+                    alert('Erro ao atualizar produto.');
+                });
+                 
+                // Configurar os eventos para os novos botões
+                setupDeleteButtons();
+                setupEditButtons();
+
+            }if (isEditMode && currentEditingRow) {
+                // Modo de edição
+                fetch('/editarProduto', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    alert(data.mensagem);
+                    window.location.href = '/Produtos'; // atualiza a página
+                })
+                .catch(error => {
+                    console.error('Erro ao atualizar produto:', error);
+                    alert('Erro ao atualizar produto.');
+                });
+                 
+                // Configurar os eventos para os novos botões
+                setupDeleteButtons();
+                setupEditButtons();
+
+            
+
+            } else {
+                // Modo de cadastro
+                fetch('/adicionarProduto', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    alert(data.mensagem);
+                    window.location.href = '/Produtos'; // atualiza a página
+                })
+                .catch(error => console.error('Erro ao enviar produto:', error));
+                
+                // Configurar os eventos para os novos botões
+                setupDeleteButtons();
+                setupEditButtons();
+                }
+            
+            // Fechar o modal e limpar o formulário
+            document.getElementById('productModal').style.display = 'none';
+            this.reset();
+            currentEditingRow = null;
+        });
+
+        // Logout
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            // Redireciona para a página de login
+            fetch('/logout', { method: 'POST' })  // Envia como POST
+                .then(response => {
+                    if(response.redirected) {
+                        window.location.href = response.url;
+                    }
+                });
+        });
+    </script>
+    <button class="theme-btn" onclick="toggleTheme()">☀️</button>
+</body>
+</html>

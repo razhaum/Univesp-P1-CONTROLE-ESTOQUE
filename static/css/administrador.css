@@ -1,0 +1,328 @@
+/* Estilos Gerais */
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #f5f7fa;
+  margin: 0;
+  padding: 20px;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+}
+
+/* Mensagens Flash */
+.flash_alerta {
+  background-color: #ffeb3b;
+  padding: 15px;
+  margin: 20px 0;
+  border-radius: 5px;
+  width: 80%;
+  text-align: center;
+  font-weight: bold;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* Títulos */
+.tituloadm {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.5rem;
+  color: #2c3e50;
+  margin: 20px 0;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-align: center;
+}
+
+.titulo, .titulo2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.titulo h1, .titulo2 h1 {
+  font-family: 'Roboto Condensed', sans-serif;
+  font-size: 2rem;
+  color: #2c3e50;
+  margin-bottom: 10px;
+}
+
+.titulo h2, .titulo2 h2 {
+  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-size: 1.2rem;
+  color: #7f8c8d;
+  margin-top: 0;
+}
+
+/* Caixa de Cadastro */
+.container {
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto 40px;
+  padding: 30px;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  border: 1px solid #e0e0e0;
+}
+
+/* Formulário */
+.login {
+  width: 100%;
+}
+
+.login form div {
+  margin-bottom: 25px;
+}
+
+.login label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: 600;
+  color: #2c3e50;
+  font-size: 1rem;
+}
+
+.login input {
+  width: 100%;
+  padding: 14px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  box-sizing: border-box;
+  transition: border 0.3s;
+}
+
+.login input:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 2px rgba(52,152,219,0.2);
+}
+
+#btn_login {
+  width: 100%;
+  padding: 14px;
+  background-color: #2c3e50;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+#btn_login:hover {
+  background-color: #1a252f;
+  transform: translateY(-2px);
+}
+
+#btn_login:active {
+  transform: translateY(0);
+}
+
+/* Caixa de Usuários Cadastrados */
+.caixa-usuarios {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto 40px;
+  padding: 30px;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  border: 1px solid #e0e0e0;
+}
+
+.lista-usuarios {
+  margin-top: 25px;
+}
+
+.usuario-item {
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 15px;
+  border-left: 5px solid #3498db;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.usuario-item:hover {
+  transform: translateX(5px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.usuario-info {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.usuario-info p {
+  margin: 0;
+  padding: 10px;
+  background-color: #e8f4fc;
+  border-radius: 6px;
+  font-size: 0.95rem;
+}
+
+.usuario-info strong {
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+.sem-usuarios {
+  text-align: center;
+  padding: 25px;
+  color: #7f8c8d;
+  font-style: italic;
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  margin-top: 20px;
+  font-size: 1.1rem;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .container, .caixa-usuarios {
+      width: 90%;
+      padding: 20px;
+  }
+  
+  .titulo h1, .titulo2 h1 {
+      font-size: 1.7rem;
+  }
+  
+  .titulo h2, .titulo2 h2 {
+      font-size: 1rem;
+  }
+  
+  .usuario-info {
+      grid-template-columns: 1fr;
+      gap: 10px;
+  }
+  
+  .login input, #btn_login {
+      padding: 12px;
+  }
+}
+
+#btn_login {
+  /* Estilo base */
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Poppins', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+
+  /* Cores e efeitos */
+  background: linear-gradient(135deg, #2c3e50 0%, #4ca1af 100%);
+  color: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  
+  /* Efeito hover */
+  &:hover {
+    background: linear-gradient(135deg, #1a252f 0%, #2d7e8a 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+  }
+
+  /* Efeito ao clicar */
+  &:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Foco para acessibilidade */
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(76, 161, 175, 0.4);
+  }
+}
+
+/* Estilo Base do Botão Excluir */
+.btn-excluir {
+  /* Layout */
+  background-color: #e74c3c; /* vermelho forte */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin-top: 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s eas
+}
+
+/* Efeito Hover - Animação de Sangue */
+.btn-excluir:hover {
+  background-color: #c0392b; /* tom mais escuro no hover */
+}
+
+/* Efeito Ativo (clicando) */
+.btn-excluir:active {
+  transform: translateY(1px);
+  box-shadow: 0 1px 3px rgba(231, 76, 60, 0.2);
+}
+
+/* Efeito de Pulsar (opcional) */
+.btn-excluir::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.5);
+  opacity: 0;
+  border-radius: 100%;
+  transform: scale(1, 1) translate(-50%);
+  transform-origin: 50% 50%;
+}
+
+.btn-excluir:hover::after {
+  animation: pulse 1s ease-out;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.3, 0.3) translate(-50%);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.2, 1.2) translate(-50%);
+    opacity: 0;
+  }
+}
+
+.flash_alerta {
+  background-color: #2ecc71; /* verde sucesso */
+  color: white;
+  padding: 15px;
+  border-radius: 5px;
+  margin: 20px auto;
+  width: fit-content;
+  font-weight: bold;
+  text-align: center;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+
+.link-login {
+  display: block;
+  margin-top: 10px;
+  text-align: center;
+  color: #007BFF;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.link-login:hover {
+  text-decoration: underline;
+}

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Sistema de estoque</title>
+        <link rel="stylesheet" type="text/css" href="..\static\css\administrador.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&family=Montserrat:wght@700&family=Roboto+Condensed:wght@700&family=Barlow+Semi+Condensed:wght@600&display=swap" rel="stylesheet">
+    </head>
+    <body>
+        
+<!-- se tiver mensagem no backend exibe -->
+    {% set menssagem = get_flashed_messages() %}
+    {% if menssagem %}
+        <div class="flash_alerta" color="black">
+            {{menssagem[0]}}
+        </div>
+    {% endif %}
+        <div class="tituloadm">administrador</h1>
+
+        <div class="titulo">
+            <h1>Sistema de Gerenciamento de Estoque</h1>
+            <h2>Cadastrar usuário</h2>
+        </div>   
+
+        <div class="container">
+            
+            
+            <div class="login">
+                <form action="/cadastrarUsuario" id="login" method="post">
+                    <div>{{ msg }}</div>
+                    <div>
+                        <label for="nome">Usuario:</label>
+                        <input class="textbox" type="text" name="nome" placeholder="Insira nome de usuario" required>
+                    </div>
+                    <div> 
+                        <label for="senha" id="senha">Senha:</label>
+                        <input class="textbox" type="password" name="senha" placeholder="Insira a senha" required>
+                    </div>
+                    <div> 
+                        <label for="email" id="email">Email:</label>
+                        <input class="textbox" type="email" name="email" placeholder="Insira email" required>
+                    </div>
+                    <div> 
+                        <button class="submit" id="btn_login">CADASTRAR</button>
+                    </div>
+                </form>
+            </div> 
+        </div>
+        
+        <!-- Substitua a div titulo2 por esta estrutura -->
+        <div class="caixa-usuarios">
+            <div class="titulo2">
+                <h1>Sistema de Gerenciamento de Estoque</h1>
+                <h2>Usuários cadastrados</h2>
+            </div>
+        
+            <div class="lista-usuarios">
+                {% if usuarios %}
+                    {% for usuario in usuarios %}
+                    <form action="/excluirUsuario" method="POST">
+                        <div class="usuario-item">
+                            <div class="usuario-info">
+                                <input type="hidden" name="usuarioPexcluir" value="{{usuario[0]}}">
+                                <input type="hidden" name="usuarioPexcluir" value="{{usuario[1]}}">
+                                <p><strong>Nome:</strong> {{ usuario[1] }}</p>
+                                <p><strong>Email:</strong>{{ usuario[3]}}</p>
+                                <!-- <p><strong>Nome:</strong> {{ usuario['nome'] }}</p>
+                                <p><strong>Senha:</strong> {{ usuario['senha'] }}</p> -->
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-excluir">EXCLUIR</button>
+                    </form>
+                    {% endfor %}
+                {% else %}
+                    <div class="sem-usuarios">
+                        <p>Nenhum usuário cadastrado no sistema</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        <a href="{{ url_for('login') }}" class="link-login">Já tem uma conta? Faça login</a>
+    </body>
+</html>
+</html> 
