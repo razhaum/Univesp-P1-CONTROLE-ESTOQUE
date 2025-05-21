@@ -10,8 +10,8 @@ app.config['SECRET_KEY'] = 'VICTOR'
 #Configurações para conectar no banco de dados
 db_config = {
     'host':'localhost',
-    'user':'root',
-    'passwd':'110719',
+    'user':'INSERIR O USUÁRIO',
+    'passwd':'INSERIR A SENHA',
     'auth_plugin':'mysql_native_password',
     'database':'gerenciamento_estoque'}
 
