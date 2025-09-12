@@ -10,8 +10,8 @@ app.config['SECRET_KEY'] = 'VICTOR'
 #Configurações para conectar no banco de dados
 db_config = {
     'host':'localhost',
-    'user':'INSERIR O USUÁRIO',
-    'passwd':'INSERIR A SENHA',
+    'user':'root',
+    'passwd':'Lara296082**',
     'auth_plugin':'mysql_native_password',
     'database':'gerenciamento_estoque'}
 
@@ -65,39 +65,37 @@ def cadastrarUsuario():
 
 
 @app.route('/login', methods=['POST','GET'])
-def login():  
-    if request.method =='POST':
+def login():
+    if request.method == 'POST':
         mydb = mysql.connector.connect(**db_config)
         cursor = mydb.cursor(buffered=True)
         nome = request.form["nome"]
-        senha = request.form["senha"]    
+        senha = request.form["senha"]
 
-        cont = 0
-        cursor.execute('SELECT * FROM Usuarios')
+        # Checa se é admin
+        if nome == 'adm' and senha == '000':
+            cursor.close()
+            mydb.close()
+            return redirect('/cadastrarUsuario')
 
-        usuariosBD = cursor.fetchall() 
+        # Checa usuários do banco
+        cursor.execute('SELECT nome, senha FROM Usuarios')
+        usuariosBD = cursor.fetchall()
+        cursor.close()
+        mydb.close()
 
-        for usuario in usuariosBD:
-            if cont in range(len(usuariosBD)):
-                cont +=1
-                usuarioNome = str(usuario[1])
-                usuarioSenha = str(usuario[2])
-                    
-                if nome == 'adm' and senha =='000':
-                    cursor.close()  
-                    mydb.close()
-                    return redirect('/cadastrarUsuario')
-                if usuarioNome == nome and usuarioSenha == senha:
-                    cursor.close()  
-                    mydb.close()
-                    return redirect("/Produtos")
-                if cont >= len(usuariosBD):
-                    flash('USUARIO OU SENHA INVALIDO')
-                    cursor.close()  
-                    mydb.close()
-                    return redirect("/")
-    else:
-        return render_template("login.html")
+        # Verifica se as credenciais batem
+        for usuarioNome, usuarioSenha in usuariosBD:
+            if nome == usuarioNome and senha == usuarioSenha:
+                return redirect("/Produtos")
+
+        # Se nenhum usuário bateu
+        flash('USUARIO OU SENHA INVALIDO')
+        return redirect("/")
+
+    # GET: renderiza página de login
+    return render_template("login.html")
+
     
 
 #Rota pra excluir usuário
