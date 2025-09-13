@@ -12,7 +12,7 @@ app.config['SECRET_KEY'] = 'VICTOR'
 db_config = {
     'host':'localhost',
     'user':'root',
-    'passwd':'Lara296082**',
+    'passwd':'123',
     'auth_plugin':'mysql_native_password',
     'database':'gerenciamento_estoque'}
 
