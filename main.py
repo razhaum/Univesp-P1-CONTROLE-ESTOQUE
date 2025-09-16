@@ -10,23 +10,15 @@ app.config['SECRET_KEY'] = 'VICTOR'
 
 # Configurações para conectar no banco de dados PostgreSQL
 db_config = {
-    "host": "dpg-d32bqh7diees738lc0-a.oregon-postgres.render.com",  # host externo
+    "host": "localhost",  # ou seu host anterior
     "database": "gerenciamento_estoque",
-    "user": "gerenciamento_estoque_user",
-    "password": "sIH2DLhlXQUBpZkNzQy776wQWBakhJAj",
-    "port": 5432,
-    "sslmode": "require"  # importante para Render
+    "user": "seu_usuario_local",
+    "password": "sua_senha_local",
+    "port": 5432
 }
 
 def get_db_connection():
-    conn = psycopg2.connect(
-        host="dpg-d32bqh7diees738lc0-a.oregon-postgres.render.com",  # host externo do Render
-        database="gerenciamento_estoque",
-        user="gerenciamento_estoque_user",
-        password="sIH2DLhlXQUBpZkNzQy776wQWBakhJAj",
-        port=5432,
-        sslmode="allow"  # ou "prefer"
-    )
+    conn = psycopg2.connect(**db_config, cursor_factory=RealDictCursor)
     return conn
 logado = False
 
