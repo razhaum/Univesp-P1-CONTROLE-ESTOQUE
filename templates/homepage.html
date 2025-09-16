@@ -8,628 +8,1104 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         /* Temporary inline styles for demonstration */
-        .fa-apple { color: #000000; }
-        .fa-android { color: #3DDC84; }
-        .fa-windows { color: #0078D7; }
-        .section-4-icons a { color: #2f34be; }
+        .fa-apple {
+            color: #000000;
+        }
+
+        .fa-android {
+            color: #3DDC84;
+        }
+
+        .fa-windows {
+            color: #0078D7;
+        }
+
+        .section-4-icons a {
+            color: #2f34be;
+        }
+
         /* Reset e estilos básicos */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Arial', sans-serif;
-}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
 
-body {
-    color: #333;
-    line-height: 1.6;
-}
+        body {
+            color: #333;
+            line-height: 1.6;
+        }
 
-/* Header */
-.top-bar {
-    width: 100%;
-    height: 20px;
-    background-color: #1a1a2e;
-    position: fixed;
-    top: 0;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    z-index: 1000;
-    padding: 30px 0px;
-}
+        /* Botão flutuante */
+        .accessibility-wrapper {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
 
-.top-bar a {
-    font-size: 20px;
-    color: #fff;
-    border: 2px solid #fff;
-    padding: 0px 10px;
-    text-decoration: none;
-    margin-right: 15%;
-}
+        #accessibility-toggle {
+            font-size: 27px;
+            background: transparent; /* fundo transparente */
+            color: #2f34be; /* cor apenas do ícone */
+            border: none; /* remove qualquer borda */
+            border-radius: 0; /* remove arredondamento */
+            padding: 0; /* ajusta se quiser o ícone “justo” */
+            cursor: pointer;
+            box-shadow: none; /* opcional, remove sombra */
+        }
 
-/* Seção Hero com imagem de fundo */
-.hero-section {
-    width: 100%;
-    min-height: 100vh;
-    background: 
-        linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-        url('../images/container.jpg') no-repeat center center;
-    background-size: cover;
-    display: flex;
-    align-items: center;
-    padding: 0 10%;
-    position: relative;
-}
 
-.hero-content {
-    max-width: 1200px;
-    margin: 0 auto;
-    color: white;
-    text-align: left;
-}
+        /* Wrapper flutuante */
+        .accessibility-wrapper {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
 
-.hero-title {
-    font-size: 4rem;
-    margin-bottom: 20px;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-}
+        /* Botão principal ♿ */
+        #accessibility-toggle {
+            font-size: 2rem;
+            background: rgba(30, 30, 50, 0.9);
+            color: #fff;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            padding: 14px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            transition: transform 0.3s, box-shadow 0.3s, border 0.3s;
+        }
 
-.hero-subtitle {
-    font-size: 1.8rem;
-    margin-bottom: 30px;
-    font-weight: 300;
-}
+        #accessibility-toggle:hover {
+            transform: scale(1.15);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.6);
+        }
 
-.hero-description {
-    max-width: 600px;
-    margin: 0 auto 50px;
-    font-size: 1.1rem;
-}
+        /* Container dos botões escondidos inicialmente */
+        .accessibility-buttons {
+            display: flex;
+            gap: 12px;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.4s ease;
+        }
 
-/* Ícones de plataforma */
-.icon-grid {
-    display: flex;
-    justify-content: center;
-    gap: 30px;
-    flex-wrap: wrap;
-}
+        /* Quando ativo */
+        .accessibility-wrapper.active .accessibility-buttons {
+            opacity: 1;
+            transform: translateY(0);
+        }
 
-.icon-item {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(5px);
-    border-radius: 50%;
-    padding: 15px;
-    width: 80px;
-    height: 80px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    transition: all 0.3s ease;
-}
+        /* Botões individuais - todos do mesmo tamanho */
+        .accessibility-buttons button {
+            background: rgba(40, 40, 60, 0.85); /* fundo neutro */
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            border-radius: 50%;
+            padding: 16px;
+            width: 50px;
+            height: 50px;
+            font-size: 1.5rem;
+            color: #fff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: inset 0 0 6px rgba(255, 255, 255, 0.08), 0 4px 10px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s, box-shadow 0.3s, filter 0.3s;
+        }
 
-.icon-item:hover {
-    transform: translateY(-5px);
-    background: rgba(255, 255, 255, 0.2);
-}
+        /* Hover sofisticado */
+        .accessibility-buttons button:hover {
+            transform: scale(1.25) translateY(-2px);
+            box-shadow: inset 0 0 12px rgba(255, 255, 255, 0.15), 0 6px 14px rgba(0, 0, 0, 0.4);
+            filter: brightness(1.1);
+        }
 
-.icon-item i {
-    font-size: 2.5rem;
-}
+        /* Ícones */
+        .accessibility-buttons button i {
+            display: block;
+            text-shadow: 0 0 3px rgba(255, 255, 255, 0.2);
+        }
 
-/* Cores específicas para ícones de plataforma */
-.fa-apple { color: #000000; } /* Preto Apple */
-.fa-android { color: #3DDC84; } /* Verde Android */
-.fa-windows { color: #0078D7; } /* Azul Windows */
+        /* Bordas neutras uniformes */
+        .btn-access {
+            border-color: rgba(111, 66, 193, 0.2);
+        }
 
-/* Seção 2 - Ícones de recursos */
-.section-2 {
-    width: 100%;
-    min-height: 300px;
-    background-color: rgba(47, 52, 190, 0.92); /* #2f34beeb com opacidade */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 40px 0;
-}
+        .btn-contrast {
+            border-color: rgba(230, 126, 34, 0.2);
+        }
 
-.icon-row {
-    display: flex;
-    justify-content: center;
-    gap: 80px;
-    width: 100%;
-    max-width: 1000px;
-    flex-wrap: wrap;
-}
+        .btn-daltonic {
+            border-color: rgba(231, 76, 60, 0.2);
+        }
 
-.icon-box {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    color: white;
-    text-align: center;
-    min-width: 150px;
-}
+        #ler {
+            border-color: rgba(0, 255, 204, 0.2);
+        }
 
-.icon-box i {
-    font-size: 4rem;
-    margin-bottom: 20px;
-    color: white;
-}
+        /* Garante que o botão de áudio tenha mesmo tamanho dos outros */
+        #ler {
+            width: 50px;
+            height: 50px;
+            font-size: 1.5rem;
+            padding: 0;
+        }
 
-.icon-box p {
-    font-size: 1.2rem;
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
+        /* Wrapper flutuante */
+        .accessibility-wrapper {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-family: 'Segoe UI', sans-serif;
+        }
 
-/* Seção 3 - Texto + formulário + vídeo */
-.section-3 {
-    width: 100%;
-    min-height: 100vh;
-    background-color: #f5f5f5;
-    color: #333;
-    padding: 80px 10%;
-}
+        /* Botão principal ♿ */
+        #accessibility-toggle {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            background: #1a1a1a;
+            color: #fff;
+            font-size: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            /* Borda elegante refinada */
+            border: 12px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 9px 10px rgba(0, 0, 0, 0.4);
+            transition: all 0.3s ease;
+        }
 
-.section-content {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    gap: 50px;
-    align-items: center;
-}
+        #accessibility-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+        }
 
-.text-content {
-    flex: 1;
-    max-width: 600px;
-}
+        /* Botões de acesso */
+        .accessibility-buttons {
+            display: flex;
+            gap: 12px;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(10px);
+            transition: all 0.4s ease;
+        }
 
-.section-title {
-    font-size: 2.5rem;
-    margin-bottom: 30px;
-    color: #333;
-}
+        .accessibility-wrapper.active .accessibility-buttons {
+            opacity: 1;
+            pointer-events: all;
+            transform: translateY(0);
+        }
 
-.section-text {
-    line-height: 1.6;
-    margin-bottom: 30px;
-    font-size: 1.1rem;
-}
+        /* Botões individuais */
+        .accessibility-buttons button {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #222;
+            color: #fff;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+        }
 
-.email-input {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    margin-top: 40px;
-}
+        /* Hover sofisticado e micro animação pulsante */
+        .accessibility-buttons button:hover {
+            transform: translateY(-3px) scale(1.1);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5), 0 0 6px rgba(255, 255, 255, 0.2);
+        }
 
-.email-input label {
-    font-weight: bold;
-    font-size: 1.1rem;
-}
+        /* Pulsação sutil contínua */
+        .accessibility-buttons button::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            top: 0;
+            left: 0;
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.05);
+            animation: pulse 2.5s infinite;
+        }
 
-.email-input input {
-    padding: 15px;
-    border: 2px solid #ddd;
-    border-radius: 8px;
-    font-size: 1rem;
-    max-width: 400px;
-    transition: border 0.3s ease;
-}
+        @keyframes pulse {
+            0% {
+                transform: scale(0.9);
+                opacity: 0.3;
+            }
+            50% {
+                transform: scale(1);
+                opacity: 0.6;
+            }
+            100% {
+                transform: scale(0.9);
+                opacity: 0.3;
+            }
+        }
 
-.email-input input:focus {
-    outline: none;
-    border-color: #2f34beeb;
-}
+        /* Tooltip moderno */
+        .accessibility-buttons button[title]:hover::after {
+            content: attr(title);
+            position: absolute;
+            bottom: 60px;
+            white-space: nowrap;
+            background: rgba(0, 0, 0, 0.85);
+            color: #fff;
+            padding: 4px 10px;
+            border-radius: 5px;
+            font-size: 0.85rem;
+            opacity: 0.95;
+            pointer-events: none;
+            transition: all 0.2s ease;
+        }
 
-.email-input button {
-    padding: 15px 30px;
-    background-color: #2f34beeb;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: bold;
-    cursor: pointer;
-    max-width: 200px;
-    transition: background-color 0.3s ease;
-}
+        /* Botão de áudio igual aos outros */
+        #ler {
+            font-size: 1.5rem;
+            width: 50px;
+            height: 50px;
+        }
 
-.email-input button:hover {
-    background-color: #252a9e;
-}
 
-.video-container {
-    flex: 1;
-    max-width: 600px;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-}
+        /* Cores para referência */
+        .btn-access {
+            color: #17a2b8;
+        }
 
-.video-container iframe {
-    width: 100%;
-    height: 400px;
-    border: none;
-}
+        .btn-contrast {
+            color: #6f42c1;
+        }
 
-/* Seção 4 - Redes sociais */
-.section-4 {
-    width: 100%;
-    padding: 80px 10%;
-    background-color: #fff;
-    text-align: center;
-}
+        .btn-daltonic {
+            color: #fd7e14;
+        }
 
-.section-4-content {
-    max-width: 800px;
-    margin: 0 auto;
-}
+        #ler {
+            color: #00ffcc;
+        }
 
-.section-4-text {
-    margin-bottom: 40px;
-}
+        .dark-theme {
+            background: #121212 !important;
+            color: #f1f1f1 !important;
+        }
 
-.section-4-text p {
-    font-size: 1.4rem;
-    line-height: 1.6;
-    margin-bottom: 20px;
-    color: #333;
-}
+        .high-contrast {
+            background: black !important;
+            color: yellow !important;
+        }
 
-.section-4-icons {
-    display: flex;
-    justify-content: center;
-    gap: 40px;
-    flex-wrap: wrap;
-}
+        body.daltonic main,
+        body.daltonic section,
+        body.daltonic .hero-content,
+        body.daltonic .section-2,
+        body.daltonic .section-3,
+        body.daltonic .section-4,
+        body.daltonic footer {
+            filter: grayscale(100%) contrast(120%);
+        }
 
-.section-4-icon {
-    font-size: 3rem;
-    color: #2f34be;
-    transition: transform 0.3s ease;
-}
+        /* Mantém os botões flutuantes intactos */
+        .accessibility-wrapper {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
 
-.section-4-icon:hover {
-    transform: scale(1.2);
-    color: #f685a1;
-}
 
-/* Footer */
-footer {
-    background-color: #1a1a2e;
-    color: #ecf0f1;
-    padding: 50px 10% 30px;
-    font-size: 0.9rem;
-}
+        /* Acessibilidade */
+        /* Botão de áudio */
+        #ler {
+            background: none;
+            border: none;
+            padding: 0;
+            font-size: 2rem; /* mesmo padrão para todos */
+            cursor: pointer;
+            transition: transform 0.2s;
+            color: #00ffcc; /* cor opcional */
+        }
 
-.footer-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 30px;
-}
+        #ler:hover {
+            transform: scale(1.3);
+        }
 
-.footer-logo {
-    grid-column: 1 / -1;
-    margin-bottom: 20px;
-}
+        .accessibility-wrapper {
+            position: fixed; /* mantem sempre fixo na tela */
+            bottom: 20px;
+            right: 20px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
 
-.footer-logo h3 {
-    font-size: 1.8rem;
-    color: #b8c1ff;
-    margin-bottom: 10px;
-}
+        .accessibility-buttons {
+            display: none; /* inicialmente escondido */
+            flex-direction: column;
+            gap: 10px;
+        }
 
-.footer-logo p {
-    line-height: 1.6;
-    opacity: 0.8;
-    color: #b8c1ff;
-}
+        .accessibility-wrapper.active .accessibility-buttons {
+            display: flex; /* mostra quando ativo */
+        }
 
-.footer-links h4 {
-    font-size: 1.1rem;
-    margin-bottom: 20px;
-    color: #6dd5ed;
-    position: relative;
-    padding-bottom: 10px;
-}
+        /* Botões internos */
+        .accessibility-buttons button {
+            background: none;
+            border: none;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
 
-.footer-links h4::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 40px;
-    height: 2px;
-    background-color: #2f34beeb;
-}
+        .accessibility-buttons button:hover {
+            transform: scale(1.3);
+        }
 
-.footer-links ul {
-    list-style: none;
-}
+        /* Todos os botões de acessibilidade */
+        .btn-access,
+        .btn-contrast,
+        .btn-daltonic {
+            background: none; /* remove a cor de fundo */
+            border: none; /* remove a borda */
+            padding: 0; /* remove o espaçamento interno */
+            font-size: 2rem; /* mesmo tamanho do #ler */
+            cursor: pointer; /* muda o cursor ao passar o mouse */
+            transition: transform 0.2s;
+            color: white; /* cor padrão */
+        }
 
-.footer-links li {
-    margin-bottom: 12px;
-    color: #a5b4fc;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
+        body.daltonic > *:not(.accessibility-wrapper) {
+            filter: grayscale(100%) contrast(120%);
+        }
 
-.footer-links a {
-    color: #a5b4fc;
-    text-decoration: none;
-    transition: color 0.3s ease;
-    opacity: 0.8;
-}
+        /* Hover para efeito de zoom */
+        .btn-access:hover,
+        .btn-contrast:hover,
+        .btn-daltonic:hover {
+            transform: scale(1.3);
+        }
 
-.footer-links a:hover {
-    color: #6dd5ed;
-    opacity: 1;
-}
+        /* Se quiser cores apenas para referência, mas sem caixas */
+        .btn-access {
+            color: #17a2b8;
+        }
 
-.footer-bottom {
-    grid-column: 1 / -1;
-    margin-top: 40px;
-    padding-top: 20px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    text-align: center;
-    opacity: 0.7;
-    font-size: 0.8rem;
-    color: #a5b4fc;
-}
+        .btn-contrast {
+            color: #6f42c1;
+        }
 
-/* Responsividade */
-@media (max-width: 1024px) {
-    .section-content {
-        flex-direction: column;
-        gap: 40px;
-    }
-    
-    .text-content, .video-container {
-        max-width: 100%;
-    }
-    
-    .video-container iframe {
-        height: 350px;
-    }
-    
-    .icon-row {
-        gap: 40px;
-    }
-}
+        .btn-daltonic {
+            color: #fd7e14;
+        }
 
-@media (max-width: 768px) {
-    .hero-title {
-        font-size: 2.5rem;
-    }
-    
-    .hero-subtitle {
-        font-size: 1.3rem;
-    }
-    
-    .hero-description {
-        font-size: 1rem;
-    }
-    
-    .icon-row {
-        flex-direction: column;
-        gap: 40px;
-    }
-    
-    .icon-box i {
-        font-size: 3rem;
-    }
-    
-    .hero-section, .section-3, .section-4 {
-        padding: 80px 5%;
-    }
-    
-    .section-title {
-        font-size: 2rem;
-    }
-    
-    .section-text {
-        font-size: 1rem;
-    }
-    
-    .video-container iframe {
-        height: 250px;
-    }
-    
-    .section-4-icons {
-        gap: 30px;
-    }
-    
-    .section-4-icon {
-        font-size: 2.5rem;
-    }
-    
-    .footer-container {
-        grid-template-columns: 1fr;
-    }
-    
-    .footer-links {
-        margin-bottom: 30px;
-    }
-}
 
-@media (max-width: 480px) {
-    .hero-title {
-        font-size: 2rem;
-    }
-    
-    .hero-subtitle {
-        font-size: 1.1rem;
-    }
-    
-    .icon-item {
-        width: 60px;
-        height: 60px;
-    }
-    
-    .icon-item i {
-        font-size: 2rem;
-    }
-    
-    .section-4-text p {
-        font-size: 1.2rem;
-    }
-    
-    .section-4-icon {
-        font-size: 2rem;
-    }
-    
-    .email-input input, 
-    .email-input button {
-        width: 100%;
-        max-width: none;
-    }
-}
+        /* Header */
+        .top-bar {
+            width: 100%;
+            height: 20px;
+            background-color: #1a1a2e;
+            position: fixed;
+            top: 0;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            z-index: 1000;
+            padding: 30px 0px;
+        }
+
+        .top-bar a {
+            font-size: 20px;
+            color: #fff;
+            border: 2px solid #fff;
+            padding: 0px 10px;
+            text-decoration: none;
+            margin-right: 15%;
+        }
+
+        /* Seção Hero com imagem de fundo */
+        .hero-section {
+            width: 100%;
+            min-height: 100vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+            url('../static/container.jpg') no-repeat center center;
+            background-size: cover;
+            display: flex;
+            align-items: center;
+            padding: 0 10%;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            color: white;
+            text-align: left;
+        }
+
+        .hero-title {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero-subtitle {
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+            font-weight: 300;
+        }
+
+        .hero-description {
+            max-width: 600px;
+            margin: 0 auto 50px;
+            font-size: 1.1rem;
+        }
+
+        /* Ícones de plataforma */
+        .icon-grid {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .icon-item {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            border-radius: 50%;
+            padding: 15px;
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .icon-item:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .icon-item i {
+            font-size: 2.5rem;
+        }
+
+        /* Cores específicas para ícones de plataforma */
+        .fa-apple {
+            color: #000000;
+        }
+
+        /* Preto Apple */
+        .fa-android {
+            color: #3DDC84;
+        }
+
+        /* Verde Android */
+        .fa-windows {
+            color: #0078D7;
+        }
+
+        /* Azul Windows */
+
+        /* Seção 2 - Ícones de recursos */
+        .section-2 {
+            width: 100%;
+            min-height: 300px;
+            background-color: rgba(47, 52, 190, 0.92); /* #2f34beeb com opacidade */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 0;
+        }
+
+        .icon-row {
+            display: flex;
+            justify-content: center;
+            gap: 80px;
+            width: 100%;
+            max-width: 1000px;
+            flex-wrap: wrap;
+        }
+
+        .icon-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: white;
+            text-align: center;
+            min-width: 150px;
+        }
+
+        .icon-box i {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .icon-box p {
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Seção 3 - Texto + formulário + vídeo */
+        .section-3 {
+            width: 100%;
+            min-height: 100vh;
+            background-color: #f5f5f5;
+            color: #333;
+            padding: 80px 10%;
+        }
+
+        .section-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .text-content {
+            flex: 1;
+            max-width: 600px;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            color: #333;
+        }
+
+        .section-text {
+            line-height: 1.6;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+
+        .email-input {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 40px;
+        }
+
+        .email-input label {
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .email-input input {
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            max-width: 400px;
+            transition: border 0.3s ease;
+        }
+
+        .email-input input:focus {
+            outline: none;
+            border-color: #2f34beeb;
+        }
+
+        .email-input button {
+            padding: 15px 30px;
+            background-color: #2f34beeb;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            max-width: 200px;
+            transition: background-color 0.3s ease;
+        }
+
+        .email-input button:hover {
+            background-color: #252a9e;
+        }
+
+        .video-container {
+            flex: 1;
+            max-width: 600px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .video-container iframe {
+            width: 100%;
+            height: 400px;
+            border: none;
+        }
+
+        /* Seção 4 - Redes sociais */
+        .section-4 {
+            width: 100%;
+            padding: 80px 10%;
+            background-color: #fff;
+            text-align: center;
+        }
+
+        .section-4-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .section-4-text {
+            margin-bottom: 40px;
+        }
+
+        .section-4-text p {
+            font-size: 1.4rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .section-4-icons {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .section-4-icon {
+            font-size: 3rem;
+            color: #2f34be;
+            transition: transform 0.3s ease;
+        }
+
+        .section-4-icon:hover {
+            transform: scale(1.2);
+            color: #f685a1;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #1a1a2e;
+            color: #ecf0f1;
+            padding: 50px 10% 30px;
+            font-size: 0.9rem;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+        }
+
+        .footer-logo {
+            grid-column: 1 / -1;
+            margin-bottom: 20px;
+        }
+
+        .footer-logo h3 {
+            font-size: 1.8rem;
+            color: #b8c1ff;
+            margin-bottom: 10px;
+        }
+
+        .footer-logo p {
+            line-height: 1.6;
+            opacity: 0.8;
+            color: #b8c1ff;
+        }
+
+        .footer-links h4 {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            color: #6dd5ed;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-links h4::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 40px;
+            height: 2px;
+            background-color: #2f34beeb;
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+            color: #a5b4fc;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .footer-links a {
+            color: #a5b4fc;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            opacity: 0.8;
+        }
+
+        .footer-links a:hover {
+            color: #6dd5ed;
+            opacity: 1;
+        }
+
+        .footer-bottom {
+            grid-column: 1 / -1;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            opacity: 0.7;
+            font-size: 0.8rem;
+            color: #a5b4fc;
+        }
+
+        /* Responsividade */
+        @media (max-width: 1024px) {
+            .section-content {
+                flex-direction: column;
+                gap: 40px;
+            }
+
+            .text-content, .video-container {
+                max-width: 100%;
+            }
+
+            .video-container iframe {
+                height: 350px;
+            }
+
+            .icon-row {
+                gap: 40px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.3rem;
+            }
+
+            .hero-description {
+                font-size: 1rem;
+            }
+
+            .icon-row {
+                flex-direction: column;
+                gap: 40px;
+            }
+
+            .icon-box i {
+                font-size: 3rem;
+            }
+
+            .hero-section, .section-3, .section-4 {
+                padding: 80px 5%;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .section-text {
+                font-size: 1rem;
+            }
+
+            .video-container iframe {
+                height: 250px;
+            }
+
+            .section-4-icons {
+                gap: 30px;
+            }
+
+            .section-4-icon {
+                font-size: 2.5rem;
+            }
+
+            .footer-container {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-links {
+                margin-bottom: 30px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+
+            .icon-item {
+                width: 60px;
+                height: 60px;
+            }
+
+            .icon-item i {
+                font-size: 2rem;
+            }
+
+            .section-4-text p {
+                font-size: 1.2rem;
+            }
+
+            .section-4-icon {
+                font-size: 2rem;
+            }
+
+            .email-input input,
+            .email-input button {
+                width: 100%;
+                max-width: none;
+            }
+        }
     </style>
 </head>
-<body>
-    <!-- Barra superior -->
-    <div class="top-bar">
 
-    <a href="{{url_for('login')}}">Login</a><br>
+<div class="accessibility-wrapper">
+    <button id="accessibility-toggle">♿</button>
+    <div class="accessibility-buttons">
+        <button id="ler" title="Ler página">🔊</button>
+        <button class="btn-access" onclick="toggleTheme()" title="Tema escuro">🌙</button>
+        <button class="btn-contrast" onclick="toggleContrast()" title="Alto contraste">🔳</button>
+        <button class="btn-daltonic" onclick="toggleDaltonic()" title="Daltonismo">👁️</button>
     </div>
-    <!-- Seção Hero com primeira imagem -->
-    <section class="hero-section">
-        <div class="hero-content">
-            <h1 class="hero-title">SIG</h1>
-            <h2 class="hero-subtitle">Sistema Integrado de Gerenciamento</h2>
-            <p class="hero-description">
-                Solução completa para gestão de estoques, controle de inventário 
-                e otimização de processos logísticos para sua empresa.
+</div>
+
+<body>
+
+<!-- Barra superior -->
+<div class="top-bar">
+
+
+    <a href="{{ url_for('login') }}">Login</a><br>
+
+
+</div>
+<!-- Seção Hero com primeira imagem -->
+<section class="hero-section">
+    <div class="hero-content">
+        <h1 class="hero-title">SIG</h1>
+
+        <h2 class="hero-subtitle">Sistema Integrado de Gerenciamento</h2>
+        <p class="hero-description">
+            Solução completa para gestão de estoques, controle de inventário
+            e otimização de processos logísticos para sua empresa.
+        </p>
+
+        <div class="icon-grid">
+            <div class="icon-item">
+                <i class="fab fa-apple"></i>
+            </div>
+
+            <div class="icon-item">
+                <i class="fab fa-android"></i>
+            </div>
+
+            <div class="icon-item">
+                <i class="fab fa-windows"></i>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- Seção 2 - Ícones grandes -->
+<section class="section-2">
+    <div class="icon-row">
+        <div class="icon-box">
+            <i class="fas fa-warehouse"></i>
+            <p>Armazenamento</p>
+        </div>
+        <div class="icon-box">
+            <i class="fas fa-clipboard-check"></i>
+            <p>Controle</p>
+        </div>
+        <div class="icon-box">
+            <i class="fas fa-sync-alt"></i>
+            <p>Atualizações</p>
+        </div>
+    </div>
+</section>
+
+<!-- Seção 3 - Texto + input de email e vídeo -->
+<section class="section-3">
+    <div class="section-content">
+        <div class="text-content">
+            <h2 class="section-title">Conheça Nosso Sistema</h2>
+            <p class="section-text">
+                O SIG oferece uma solução completa para gestão de estoques com tecnologia de ponta.
+                Nosso sistema foi desenvolvido para otimizar seus processos e aumentar a eficiência
+                operacional da sua empresa.
             </p>
-            
-            <div class="icon-grid">
-                <div class="icon-item">
-                    <i class="fab fa-apple"></i>
-                </div>
-                
-                <div class="icon-item">
-                    <i class="fab fa-android"></i>
-                </div>
-                
-                <div class="icon-item">
-                    <i class="fab fa-windows"></i>
-                </div>
+            <p class="section-text">
+                Assista ao vídeo ao lado para entender como nossa plataforma pode transformar
+                sua gestão de inventário e solicite uma demonstração personalizada.
+            </p>
+
+            <div class="email-input">
+                <label for="email">Receba mais informações:</label>
+                <input type="email" id="email" placeholder="Digite seu melhor e-mail">
+                <button type="submit">Enviar</button>
             </div>
         </div>
-    </section>
-    
-    <!-- Seção 2 - Ícones grandes -->
-    <section class="section-2">
-        <div class="icon-row">
-            <div class="icon-box">
-                <i class="fas fa-warehouse"></i>
-                <p>Armazenamento</p>
-            </div>
-            <div class="icon-box">
-                <i class="fas fa-clipboard-check"></i>
-                <p>Controle</p>
-            </div>
-            <div class="icon-box">
-                <i class="fas fa-sync-alt"></i>
-                <p>Atualizações</p>
-            </div>
+
+        <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+                    title="Demonstração do Sistema"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen></iframe>
         </div>
-    </section>
-    
-    <!-- Seção 3 - Texto + input de email e vídeo -->
-    <section class="section-3">
-        <div class="section-content">
-            <div class="text-content">
-                <h2 class="section-title">Conheça Nosso Sistema</h2>
-                <p class="section-text">
-                    O SIG oferece uma solução completa para gestão de estoques com tecnologia de ponta. 
-                    Nosso sistema foi desenvolvido para otimizar seus processos e aumentar a eficiência 
-                    operacional da sua empresa.
-                </p>
-                <p class="section-text">
-                    Assista ao vídeo ao lado para entender como nossa plataforma pode transformar 
-                    sua gestão de inventário e solicite uma demonstração personalizada.
-                </p>
-                
-                <div class="email-input">
-                    <label for="email">Receba mais informações:</label>
-                    <input type="email" id="email" placeholder="Digite seu melhor e-mail">
-                    <button type="submit">Enviar</button>
-                </div>
-            </div>
-            
-            <div class="video-container">
-                <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" 
-                        title="Demonstração do Sistema" 
-                        frameborder="0" 
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                        allowfullscreen></iframe>
-            </div>
-        </div>  
-    </section>
-    
-    <!-- Seção 4 - Redes sociais -->
-    <section class="section-4">
-        <div class="section-4-content">
-            <div class="section-4-text">
-                <p>Transforme sua gestão de estoque com nossa solução completa.</p>
-                <p>Conecte-se com nossos canais para saber mais:</p>
-            </div>
-            <div class="section-4-icons">
-                <a href="#" class="section-4-icon"><i class="fab fa-twitter"></i></a>
-                <a href="#" class="section-4-icon"><i class="fab fa-facebook-f"></i></a>
-                <a href="#" class="section-4-icon"><i class="fab fa-instagram"></i></a>
-                <a href="#" class="section-4-icon"><i class="fab fa-linkedin-in"></i></a>
-                <a href="#" class="section-4-icon"><i class="fab fa-youtube"></i></a>
-            </div>
+    </div>
+</section>
+
+<!-- Seção 4 - Redes sociais -->
+<section class="section-4">
+    <div class="section-4-content">
+        <div class="section-4-text">
+            <p>Transforme sua gestão de estoque com nossa solução completa.</p>
+            <p>Conecte-se com nossos canais para saber mais:</p>
         </div>
-    </section>
-    
-    <!-- Footer -->
-    <footer>
-        <div class="footer-container">
-            <div class="footer-logo">
-                <h3>SIG</h3>
-                <p>Sistema Integrado de Gerenciamento de Estoque</p>
-            </div>
-            
-            <div class="footer-links">
-                <h4>Links Rápidos</h4>
-                <ul>
-                    <li><a href="#"><i class="fas fa-chevron-right"></i> Contact</a></li>
-                    <li><a href="#"><i class="fas fa-chevron-right"></i> Download</a></li>
-                    <li><a href="#"><i class="fas fa-chevron-right"></i> Press</a></li>
-                </ul>
-            </div>
-            
-            <div class="footer-links">
-                <h4>Suporte</h4>
-                <ul>
-                    <li><a href="#"><i class="fas fa-chevron-right"></i> Email Support</a></li>
-                    <li><a href="#"><i class="fas fa-chevron-right"></i> Privacy Policy</a></li>
-                </ul>
-            </div>
-            
-            <div class="footer-links">
-                <h4>Contato</h4>
-                <ul>
-                    <li><i class="fas fa-map-marker-alt"></i> São Paulo, Brasil</li>
-                    <li><i class="fas fa-phone"></i> +55 11 98765-4321</li>
-                    <li><i class="fas fa-envelope"></i> contato@sig.com.br</li>
-                </ul>
-            </div>
-            
-            <div class="footer-bottom">
-                <p>&copy; <script>document.write(new Date().getFullYear())</script> SIG Sistema de Gerenciamento. Todos os direitos reservados.</p>
-            </div>
+        <div class="section-4-icons">
+            <a href="#" class="section-4-icon"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="section-4-icon"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="section-4-icon"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="section-4-icon"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#" class="section-4-icon"><i class="fab fa-youtube"></i></a>
         </div>
-    </footer>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer>
+    <div class="footer-container">
+        <div class="footer-logo">
+            <h3>SIG</h3>
+            <p>Sistema Integrado de Gerenciamento de Estoque</p>
+        </div>
+
+        <div class="footer-links">
+            <h4>Links Rápidos</h4>
+            <ul>
+                <li><a href="#"><i class="fas fa-chevron-right"></i> Contact</a></li>
+                <li><a href="#"><i class="fas fa-chevron-right"></i> Download</a></li>
+                <li><a href="#"><i class="fas fa-chevron-right"></i> Press</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-links">
+            <h4>Suporte</h4>
+            <ul>
+                <li><a href="#"><i class="fas fa-chevron-right"></i> Email Support</a></li>
+                <li><a href="#"><i class="fas fa-chevron-right"></i> Privacy Policy</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-links">
+            <h4>Contato</h4>
+            <ul>
+                <li><i class="fas fa-map-marker-alt"></i> São Paulo, Brasil</li>
+                <li><i class="fas fa-phone"></i> +55 11 98765-4321</li>
+                <li><i class="fas fa-envelope"></i> contato@sig.com.br</li>
+            </ul>
+        </div>
+
+
+        <div class="footer-bottom">
+            <p>&copy;
+                <script>document.write(new Date().getFullYear())</script>
+                SIG Sistema de Gerenciamento. Todos os direitos reservados.
+            </p>
+        </div>
+
+
+        <script>
+            // Toggle do menu flutuante
+            const toggleBtn = document.getElementById("accessibility-toggle");
+            const buttonsDiv = document.querySelector(".accessibility-buttons");
+
+            toggleBtn.addEventListener("click", () => {
+                document.querySelector(".accessibility-wrapper").classList.toggle("active");
+            });
+
+            // Leitura de página
+            const btnLer = document.getElementById("ler");
+            let lendo = false;
+            let utterance;
+
+            btnLer.addEventListener("click", () => {
+                if (!lendo) {
+                    const texto = document.body.innerText;
+                    utterance = new SpeechSynthesisUtterance(texto);
+                    utterance.lang = "pt-BR";
+                    speechSynthesis.speak(utterance);
+                    lendo = true;
+                    btnLer.textContent = "⏹️";
+
+                    utterance.addEventListener("end", () => {
+                        lendo = false;
+                        btnLer.textContent = "🔊";
+                    });
+                } else {
+                    speechSynthesis.cancel();
+                    lendo = false;
+                    btnLer.textContent = "🔊";
+                }
+            });
+
+            // Funções de acessibilidade
+            function toggleTheme() {
+                document.body.classList.toggle('dark-theme');
+            }
+
+            function toggleContrast() {
+                document.body.classList.toggle('high-contrast');
+            }
+
+            function toggleDaltonic() {
+                document.body.classList.toggle('daltonic');
+            }
+        </script>
+
+    </div>
+</footer>
 </body>
 </html>
