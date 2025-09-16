@@ -2,6 +2,8 @@ from flask import Flask , render_template, redirect, request, flash, session, js
 import os
 import ast
 import mysql.connector
+import psycopg2
+from psycopg2.extras import RealDictCursor  # Cursor que retorna dicts
 from datetime import datetime
 import re
 
@@ -10,11 +12,17 @@ app.config['SECRET_KEY'] = 'VICTOR'
 
 #Configurações para conectar no banco de dados
 db_config = {
-    'host':'localhost',
-    'user':'root',
-    'passwd':'Lara296082**',
-    'auth_plugin':'mysql_native_password',
-    'database':'gerenciamento_estoque'}
+    'host': 'dpg-d32bqh7diees738lc8d0-a.oregon-postgres.render.com',  # seu host
+    'database': 'gerenciamento_estoque',  # seu banco
+    'user': 'gerenciamento_estoque_user',  # seu usuário
+    'password': 'sIH2DLhlXQUBpZkNzQy776wQWBakhJAj',  # sua senha
+    'port': 5432
+}
+
+def get_db_connection():
+    conn = psycopg2.connect(**db_config)
+    cursor = conn.cursor(cursor_factory=RealDictCursor)
+    return conn, cursor
 
 
 logado = False
