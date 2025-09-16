@@ -17,7 +17,13 @@ db_config = {
 
 # Função para conexão
 def get_db_connection():
-    return mysql.connector.connect(**db_config, dictionary=True)
+    conn = mysql.connector.connect(**db_config)
+    cursor = conn.cursor(dictionary=True)  # Aqui você cria o cursor com dicionário
+    return conn, cursor
+
+
+
+
 
 logado = False
 
