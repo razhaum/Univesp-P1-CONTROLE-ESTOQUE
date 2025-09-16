@@ -1,24 +1,23 @@
 from flask import Flask, render_template, redirect, request, flash, jsonify
 import os
 import re
-import psycopg2
-from psycopg2.extras import RealDictCursor
+import mysql.connector
 from datetime import datetime
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'VICTOR'
 
-# Configurações para conectar no banco de dados PostgreSQL (Render)
+# Configuração MySQL local
 db_config = {
-    'host':'localhost',
-    'user':'root',
-    'passwd':'Lara296082**',
-    'auth_plugin':'mysql_native_password',
-    'database':'gerenciamento_estoque'}
+    'host': 'localhost',
+    'user': 'root',
+    'password': 'Lara296082**',
+    'database': 'gerenciamento_estoque'
+}
 
+# Função para conexão
 def get_db_connection():
-    conn = psycopg2.connect(**db_config, cursor_factory=RealDictCursor)
-    return conn
+    return mysql.connector.connect(**db_config, dictionary=True)
 
 logado = False
 
@@ -27,6 +26,8 @@ def home():
     global logado
     logado = False
     return render_template('homepage.html')
+
+# ----------------- USUÁRIOS -----------------
 
 @app.route('/cadastrarUsuario', methods=['GET','POST'])
 def cadastrarUsuario():
@@ -43,7 +44,7 @@ def cadastrarUsuario():
         account = cursor.fetchone()
 
         if account:
-            msg = 'Já existe uma conta com esse usuario!'
+            msg = 'Já existe uma conta com esse usuário!'
         elif not re.match(r'[^@]+@[^@]+\.[^@]+', email):
             msg = 'Endereço de email inválido'
         elif not re.match(r'^[A-Za-z0-9]+$', nome):
@@ -108,6 +109,8 @@ def excluirUsuario():
     flash('Usuário excluído com sucesso!')
     return redirect('/cadastrarUsuario')
 
+# ----------------- PRODUTOS -----------------
+
 @app.route('/adicionarProduto', methods=['GET','POST'])
 def adicionarProduto():
     msg = ''
@@ -123,7 +126,8 @@ def adicionarProduto():
 
         conn = get_db_connection()
         cursor = conn.cursor()
-        cursor.execute("SELECT * FROM Produtos WHERE nome_produto = %s AND fornecedor = %s", (nome_produto, fornecedor))
+        cursor.execute("SELECT * FROM Produtos WHERE nome_produto = %s AND fornecedor = %s",
+                       (nome_produto, fornecedor))
         produto_cadastrado = cursor.fetchone()
 
         if produto_cadastrado:
@@ -191,11 +195,15 @@ def editar_produto():
     conn.close()
     return jsonify({'mensagem': 'Produto atualizado com sucesso!'})
 
+# ----------------- LOGOUT -----------------
+
 @app.route('/logout', methods=['GET', 'POST'])
 def logout():
     global logado
     logado = False
     return redirect('/')
+
+# ----------------- RUN -----------------
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
