@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, request, flash, session, jsonify
+from flask import Flask, render_template, redirect, request, flash, jsonify
 import os
 import re
 import psycopg2
@@ -8,19 +8,18 @@ from datetime import datetime
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'VICTOR'
 
-# Configurações para conectar no banco de dados PostgreSQL
+# Configurações para conectar no banco de dados PostgreSQL (Render)
 db_config = {
-    "host": "dpg-d32bqh7diees738lc0-a.oregon-postgres.render.com",  # host externo
-    "database": "gerenciamento_estoque",
-    "user": "gerenciamento_estoque_user",
-    "password": "sIH2DLhlXQUBpZkNzQy776wQWBakhJAj",
-    "port": 5432,
-    "sslmode": "require"  # importante para Render
-}
+    'host':'localhost',
+    'user':'root',
+    'passwd':'Lara296082**',
+    'auth_plugin':'mysql_native_password',
+    'database':'gerenciamento_estoque'}
 
 def get_db_connection():
     conn = psycopg2.connect(**db_config, cursor_factory=RealDictCursor)
     return conn
+
 logado = False
 
 @app.route('/')
@@ -95,7 +94,7 @@ def login():
 
     return render_template("login.html")
 
-@app.route('/excluirUsuario',methods=['POST'])
+@app.route('/excluirUsuario', methods=['POST'])
 def excluirUsuario():
     usuarioID = request.form.get('usuarioPexcluir')
 
