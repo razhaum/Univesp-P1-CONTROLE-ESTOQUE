@@ -10,11 +10,12 @@ app.config['SECRET_KEY'] = 'VICTOR'
 
 # Configurações para conectar no banco de dados PostgreSQL
 db_config = {
-    "host": "localhost",  # ou seu host anterior
+    "host": "dpg-d32bqh7diees738lc0-a.oregon-postgres.render.com",  # host externo
     "database": "gerenciamento_estoque",
-    "user": "seu_usuario_local",
-    "password": "sua_senha_local",
-    "port": 5432
+    "user": "gerenciamento_estoque_user",
+    "password": "sIH2DLhlXQUBpZkNzQy776wQWBakhJAj",
+    "port": 5432,
+    "sslmode": "require"  # importante para Render
 }
 
 def get_db_connection():
